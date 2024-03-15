@@ -2,7 +2,6 @@ public class PacManLogic {
 
     Spaces[][] maze;
 
-
     public PacManLogic() {
         maze = new Spaces[20][151];
         start();
@@ -19,6 +18,7 @@ public class PacManLogic {
                 maze[r][c] = new Spaces("_");
             }
         }
+        maze[19][150] = new PacMan("C", true, "right");
     }
 
     private void printMaze() {
@@ -28,6 +28,10 @@ public class PacManLogic {
             }
             System.out.println();
         }
+    }
+
+    public void game() {
+
     }
 
 }

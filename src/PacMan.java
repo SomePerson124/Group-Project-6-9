@@ -4,11 +4,11 @@ public class PacMan extends Character {
     private int points;
     private int lives;
 
-    public PacMan(boolean alive, String direction, int pelletsCollected, int points, int lives) {
-        super(alive, direction);
-        this.pelletsCollected = pelletsCollected;
-        this.points = points;
-        this.lives = lives;
+    public PacMan(String symbol, boolean alive, String direction) {
+        super(symbol, alive, direction);
+        this.pelletsCollected = 0;
+        this.points = 0;
+        this.lives = 3;
     }
 
     public int getPelletsCollected() {

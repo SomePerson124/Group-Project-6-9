@@ -1,10 +1,11 @@
-public class Character {
+public class Character extends Spaces {
 
     private boolean alive;
     private String direction;
 
 
-    public Character(boolean alive, String direction) {
+    public Character(String symbol, boolean alive, String direction) {
+        super(symbol);
         this.alive = alive;
         this.direction = direction;
     }

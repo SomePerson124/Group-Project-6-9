@@ -3,8 +3,8 @@ public class Ghost extends Character {
     private String color;
     private boolean inBase;
 
-    public Ghost(boolean alive, String direction, String color, boolean inBase) {
-        super(alive, direction);
+    public Ghost(String symbol, boolean alive, String direction, String color, boolean inBase) {
+        super(symbol, alive, direction);
         this.color = color;
         this.inBase = inBase;
     }
