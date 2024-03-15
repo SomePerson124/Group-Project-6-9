@@ -20,12 +20,12 @@ public class PacManLogic {
             }
         }
         for (int i = 0; i < 150; i++) {
-            maze[0][i] = new Spaces("⬜");
-            maze[maze.length - 1][i] = new Spaces("⬜");
+            maze[0][i] = new Spaces("\uD82F\uDCA1");
+            maze[maze.length - 1][i] = new Spaces("\uD82F\uDCA1");
         }
         for (int i = 0; i < maze.length; i++) {
-            maze[i][0] = new Spaces("⬜");
-            maze[i][maze[0].length - 1] = new Spaces("⬜");
+            maze[i][0] = new Spaces("\uD82F\uDCA1");
+            maze[i][maze[0].length - 1] = new Spaces("\uD82F\uDCA1");
         }
     }
 
