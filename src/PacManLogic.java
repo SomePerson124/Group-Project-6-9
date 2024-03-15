@@ -10,10 +10,15 @@ public class PacManLogic {
 
     private void start() {
         setUpMaze();
-        printGrid();
+        printMaze();
     }
 
     private void setUpMaze() {
+        for (int r = 0; r < maze.length; r++) {
+            for (int c = 0; c < maze[r].length; c++) {
+                maze[r][c] = new Spaces("_");
+            }
+        }
         for (int i = 0; i < 150; i++) {
             maze[0][i] = new Spaces("⬜");
             maze[maze.length - 1][i] = new Spaces("⬜");
@@ -22,24 +27,19 @@ public class PacManLogic {
             maze[i][0] = new Spaces("⬜");
             maze[i][maze[0].length - 1] = new Spaces("⬜");
         }
-        for (int r = 0; r < maze.length; r++) {
-            for (int c = 0; c < maze[r].length; c++) {
-                if (maze[r][c] == null) {
-                    maze[r][c] = new Spaces("-");
-                }
-
-            }
-        }
-        maze[3][5] = new Spaces("ᗧ");
     }
 
-    private void printGrid() {
+    private void printMaze() {
         for (int r = 0; r < maze.length; r++) {
             for (int c = 0; c < maze[r].length; c++) {
                 System.out.print(maze[r][c].getSymbol());
             }
             System.out.println();
         }
+    }
+
+    public void game() {
+
     }
 
 }
