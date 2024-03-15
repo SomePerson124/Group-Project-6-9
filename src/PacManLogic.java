@@ -1,18 +1,30 @@
 public class PacManLogic {
 
-    Spaces[][] grid;
+    Spaces[][] maze;
 
 
     public PacManLogic() {
-        grid = new Spaces[20][151];
+        maze = new Spaces[20][151];
+        start();
+    }
+
+    private void start() {
+        setUpMaze();
         printGrid();
     }
 
+    private void setUpMaze() {
+        for (int r = 0; r < maze.length; r++) {
+            for (int c = 0; c < maze[r].length; c++) {
+                maze[r][c] = new Spaces("_");
+            }
+        }
+    }
+
     private void printGrid() {
-        for (int r = 0; r < grid.length; r++) {
-            for (int c = 0; c < grid[r].length; c++) {
-                grid[r][c] = new Spaces("_");
-                System.out.print(grid[r][c].getSymbol());
+        for (int r = 0; r < maze.length; r++) {
+            for (int c = 0; c < maze[r].length; c++) {
+                System.out.print(maze[r][c].getSymbol());
             }
             System.out.println();
         }
