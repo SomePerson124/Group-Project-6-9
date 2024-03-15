@@ -10,7 +10,7 @@ public class PacManLogic {
 
     private void start() {
         setUpMaze();
-        printGrid();
+        printMaze();
     }
 
     private void setUpMaze() {
@@ -21,7 +21,7 @@ public class PacManLogic {
         }
     }
 
-    private void printGrid() {
+    private void printMaze() {
         for (int r = 0; r < maze.length; r++) {
             for (int c = 0; c < maze[r].length; c++) {
                 System.out.print(maze[r][c].getSymbol());
