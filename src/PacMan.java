@@ -1,5 +1,5 @@
 public class PacMan extends Character {
-
+    private int moves;
     private int pelletsCollected;
     private int points;
     private int lives;
@@ -13,6 +13,13 @@ public class PacMan extends Character {
 
     public int getPelletsCollected() {
         return pelletsCollected;
+    }
+
+    public void setSymbol() {
+        if (getDirection().equals("north")) {super.setSymbol("V");}
+        if (getDirection().equals("south")) {super.setSymbol("^");}
+        if (getDirection().equals("west")) {super.setSymbol(">");}
+        if (getDirection().equals("east")) {super.setSymbol("<");}
     }
 
     public int getPoints() {
@@ -31,8 +38,13 @@ public class PacMan extends Character {
         // implement code
     }
 
+    public void move() {
+        moves++;
+    }
+
     public void death() {
         lives--;
     }
+
 
 }

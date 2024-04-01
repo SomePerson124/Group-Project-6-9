@@ -10,4 +10,7 @@ public class Spaces {
         return symbol;
     }
 
+    public void setSymbol(String s) {
+        symbol = s;
+    }
 }
