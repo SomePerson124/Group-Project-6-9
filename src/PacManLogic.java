@@ -6,11 +6,8 @@ public class PacManLogic {
     private PacMan pacMan;
     Spaces[][] maze;
 
-
-
-
     public PacManLogic() {
-        maze = new Spaces[20][151];
+        maze = new Spaces[20][101];
         start();
     }
 
@@ -22,14 +19,14 @@ public class PacManLogic {
     private void setUpMaze() {
         for (int r = 0; r < maze.length; r++) {
             for (int c = 0; c < maze[r].length; c++) {
-                maze[r][c] = new Spaces("_");
+                maze[r][c] = new Spaces(".");
             }
         }
         pacMan = new PacMan("<", true, "east");
         pacManCol = 1;
         pacManRow = 1;
         maze[pacManRow][pacManCol] = pacMan;
-        for (int i = 0; i < 150; i++) {
+        for (int i = 0; i < 100; i++) {
             maze[0][i] = new Wall("\uD82F\uDCA1");
             maze[maze.length - 1][i] = new Wall("\uD82F\uDCA1");
         }
@@ -50,33 +47,32 @@ public class PacManLogic {
     }
 
     public void game() {
-        //placeholder
-        while (!(maze[0][150] instanceof PacMan)) {
-            System.out.println("Enter W, A, S, D: ");
-            String moveKey = scan.nextLine();
+        while (!(maze[0][100] instanceof PacMan)) {
+            System.out.print("Enter W, A, S, D: ");
+            String moveKey = scan.nextLine().toUpperCase();
             if (moveKey.equals("W")) {
-                if (validMove(pacManCol, pacManRow - 1)) {
+                if (validMove(pacManRow - 1, pacManCol)) {
                     maze[pacManRow - 1][pacManCol] = pacMan;
                     maze[pacManRow][pacManCol] = new Spaces("_");
                     pacManRow = pacManRow - 1;
                 }
                 pacMan.setDirection("north");
             } else if (moveKey.equals("A")) {
-                if (validMove(pacManCol - 1, pacManRow)) {
+                if (validMove(pacManRow, pacManCol - 1)) {
                     maze[pacManRow][pacManCol - 1] = pacMan;
                     maze[pacManRow][pacManCol] = new Spaces("_");
                     pacManCol = pacManCol - 1;
                 }
                 pacMan.setDirection("west");
             } else if (moveKey.equals("S")) {
-                if (validMove(pacManCol, pacManRow + 1)) {
+                if (validMove(pacManRow + 1, pacManCol)) {
                     maze[pacManRow + 1][pacManCol] = pacMan;
                     maze[pacManRow][pacManCol] = new Spaces("_");
                     pacManRow = pacManRow + 1;
                 }
                 pacMan.setDirection("south");
             } else if (moveKey.equals("D")) {
-                if (validMove(pacManCol + 1, pacManRow)) {
+                if (validMove(pacManRow, pacManCol + 1)) {
                     maze[pacManRow][pacManCol + 1] = pacMan;
                     maze[pacManRow][pacManCol] = new Spaces("_");
                     pacManCol = pacManCol + 1;
@@ -91,8 +87,8 @@ public class PacManLogic {
         System.out.println("You win!");
     }
 
-    private boolean validMove(int x, int y) {
-        if (/*y >= 0 && x >= 0 && y < maze.length && x < maze[0].length &&*/ !(maze[x][y] instanceof Wall)){
+    private boolean validMove(int row, int col) {
+        if (!(maze[row][col] instanceof Wall)){
             return true;
         } else {
             System.out.println("Cannot move there!");

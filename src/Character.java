@@ -26,8 +26,4 @@ public class Character extends Spaces {
         direction = newDirection;
     }
 
-    public void move(String direction) {
-
-    }
-
 }
