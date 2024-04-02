@@ -51,9 +51,9 @@ public class PacManLogic {
 
     public void game() {
         //placeholder
-        while (!(maze[0][150] instanceof PacMan)) {
+        while (!(maze[18][1] instanceof PacMan)) {
             System.out.println("Enter W, A, S, D: ");
-            String moveKey = scan.nextLine();
+            String moveKey = scan.nextLine().toUpperCase();
             if (moveKey.equals("W")) {
                 if (validMove(pacManCol, pacManRow - 1)) {
                     maze[pacManRow - 1][pacManCol] = pacMan;
