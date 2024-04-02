@@ -6,6 +6,9 @@ public class PacManLogic {
     private PacMan pacMan;
     Spaces[][] maze;
 
+
+
+
     public PacManLogic() {
         maze = new Spaces[20][101];
         start();
@@ -19,7 +22,7 @@ public class PacManLogic {
     private void setUpMaze() {
         for (int r = 0; r < maze.length; r++) {
             for (int c = 0; c < maze[r].length; c++) {
-                maze[r][c] = new Spaces(".");
+                maze[r][c] = new Spaces("_");
             }
         }
         pacMan = new PacMan("<", true, "east");
