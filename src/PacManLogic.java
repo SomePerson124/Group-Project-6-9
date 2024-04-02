@@ -26,7 +26,9 @@ public class PacManLogic {
             }
         }
         pacMan = new PacMan("<", true, "east");
-        maze[1][1] = pacMan;
+        pacManCol = 1;
+        pacManRow = 1;
+        maze[pacManRow][pacManCol] = pacMan;
         for (int i = 0; i < 150; i++) {
             maze[0][i] = new Wall("\uD82F\uDCA1");
             maze[maze.length - 1][i] = new Wall("\uD82F\uDCA1");
@@ -90,7 +92,7 @@ public class PacManLogic {
     }
 
     private boolean validMove(int x, int y) {
-        if (y >= 0 && x >= 0 && y < maze.length && x < maze[0].length/* && !(maze[x][y] instanceof Wall)*/){
+        if (/*y >= 0 && x >= 0 && y < maze.length && x < maze[0].length &&*/ !(maze[x][y] instanceof Wall)){
             return true;
         } else {
             System.out.println("Cannot move there!");
