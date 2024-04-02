@@ -25,4 +25,9 @@ public class Ghost extends Character {
         inBase = baseStatus;
     }
 
+    @Override
+    public void setDirection(String newDirection) {
+
+    }
+
 }

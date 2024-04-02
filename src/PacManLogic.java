@@ -4,6 +4,7 @@ public class PacManLogic {
     private int pacManRow;
     private int pacManCol;
     private PacMan pacMan;
+    private Ghost ghostR;
     Spaces[][] maze;
 
 
@@ -11,6 +12,10 @@ public class PacManLogic {
 
     public PacManLogic() {
         maze = new Spaces[20][101];
+        pacManCol = 1;
+        pacManRow = 1;
+        pacMan = new PacMan("<", true, "east");
+        ghostR = new Ghost("G", true, "east", "red", true);
         start();
     }
 
@@ -25,10 +30,8 @@ public class PacManLogic {
                 maze[r][c] = new Spaces("_");
             }
         }
-        pacMan = new PacMan("<", true, "east");
-        pacManCol = 1;
-        pacManRow = 1;
         maze[pacManRow][pacManCol] = pacMan;
+        maze[5][10] = ghostR;
         for (int i = 0; i < 100; i++) {
             maze[0][i] = new Wall("\uD82F\uDCA1");
             maze[maze.length - 1][i] = new Wall("\uD82F\uDCA1");
