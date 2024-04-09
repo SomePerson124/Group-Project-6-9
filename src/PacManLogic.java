@@ -7,6 +7,8 @@ public class PacManLogic {
     private int columns;
     private int pacManRow;
     private int pacManCol;
+    private int ghostRow;
+    private int ghostCol;
     private PacMan pacMan;
     private Ghost ghost;
     Spaces[][] maze;
@@ -17,6 +19,8 @@ public class PacManLogic {
         columns = 26;
         pacManCol = 1;
         pacManRow = 1;
+        ghostRow = 5;
+        ghostCol = 10;
         highScores = new ArrayList<>();
         maze = new Spaces[rows][columns];
         pacMan = new PacMan("<", true, "east");
@@ -27,6 +31,7 @@ public class PacManLogic {
     private void start() {
         setUpMaze();
         printMaze();
+        game();
     }
 
     private void setUpMaze() {
@@ -41,7 +46,7 @@ public class PacManLogic {
             }
         }
         maze[pacManRow][pacManCol] = pacMan;
-        maze[5][10] = ghost;
+        maze[ghostRow][ghostCol] = ghost;
         maze[5][0] = new Warp("[");
         maze[5][columns - 1] = new Warp("]");
     }
@@ -146,6 +151,7 @@ public class PacManLogic {
             } else {
                 System.out.println("INVALID DIRECTION");
             }
+            moveGhost();
             pacMan.setSymbol();
             printMaze();
         }
@@ -159,6 +165,40 @@ public class PacManLogic {
             System.out.println("Cannot move there!");
             return false;
         }
+    }
+
+    private void moveGhost() {
+        String dir = ghost.direction();
+        if (dir.equals("north")) {
+            if (!(maze[ghostRow - 1][ghostCol] instanceof Wall)) {
+                maze[ghostRow - 1][ghostCol] = ghost;
+                maze[ghostRow][ghostCol] = new Spaces(" ");
+                ghostRow--;
+            }
+        }
+        if (dir.equals("west")) {
+            if (!(maze[ghostRow][ghostCol - 1] instanceof Wall) && !(maze[ghostRow][ghostCol - 1] instanceof Warp)) {
+                maze[ghostRow][ghostCol - 1] = ghost;
+                maze[ghostRow][ghostCol] = new Spaces(" ");
+                ghostCol--;
+            }
+        }
+        if (dir.equals("south")) {
+            if (!(maze[ghostRow + 1][ghostCol] instanceof Wall)) {
+                maze[ghostRow + 1][ghostCol] = ghost;
+                maze[ghostRow][ghostCol] = new Spaces(" ");
+                ghostRow++;
+            }
+        }
+        if (dir.equals("east")) {
+            if (!(maze[ghostRow][ghostCol + 1] instanceof Wall) && !(maze[ghostRow][ghostCol + 1] instanceof Warp)) {
+                maze[ghostRow][ghostCol + 1] = ghost;
+                maze[ghostRow][ghostCol] = new Spaces(" ");
+                ghostCol++;
+            }
+        }
+        ghost.setDirection(dir);
+        ghost.setSymbol();
     }
 
     private boolean isPellet(int row, int col) {
