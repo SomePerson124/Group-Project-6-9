@@ -1,4 +1,6 @@
 import java.util.Scanner;
+import java.util.ArrayList;
+
 public class PacManLogic {
     private Scanner scan = new Scanner(System.in);
     private int rows;
@@ -6,17 +8,19 @@ public class PacManLogic {
     private int pacManRow;
     private int pacManCol;
     private PacMan pacMan;
-    private Ghost ghost1;
+    private Ghost ghost;
     Spaces[][] maze;
+    ArrayList<Integer> highScores;
 
     public PacManLogic() {
         rows = 10;
         columns = 26;
         pacManCol = 1;
         pacManRow = 1;
+        highScores = new ArrayList<>();
         maze = new Spaces[rows][columns];
         pacMan = new PacMan("<", true, "east");
-        ghost1 = new Ghost("👻", true, "east");
+        ghost = new Ghost("👻", "east");
         start();
     }
 
@@ -37,7 +41,7 @@ public class PacManLogic {
             }
         }
         maze[pacManRow][pacManCol] = pacMan;
-        maze[5][10] = ghost1;
+        maze[5][10] = ghost;
         maze[5][0] = new Warp("[");
         maze[5][columns - 1] = new Warp("]");
     }
@@ -52,6 +56,10 @@ public class PacManLogic {
     }
 
     public void game() {
+        int random1 = (int) (Math.random() * 91 + 100);
+        int random2 = (int) (Math.random() * 91 + 100);
+        highScores.add(random1);
+        highScores.add(random2);
         while (arePelletsLeft() && pacMan.isAlive()) {
             System.out.print("Enter W, A, S, D: ");
             String moveKey = scan.nextLine().toUpperCase();
@@ -141,6 +149,7 @@ public class PacManLogic {
             pacMan.setSymbol();
             printMaze();
         }
+        System.out.println(scoresList(pacMan.getPelletsCollected()));
     }
 
     private boolean validMove(int row, int col) {
@@ -182,6 +191,39 @@ public class PacManLogic {
             }
         }
         return false;
+    }
+
+    private String scoresList(int playerScore) {
+        highScores.add(playerScore);
+        int greatest = highScores.get(0);
+        int least = highScores.get(0);
+        int middle = 0;
+        int idxPS = 0;
+        String str = "";
+        for (int i = 0; i < highScores.size(); i++) {
+            if (highScores.get(i) > greatest) {
+                greatest = highScores.get(i);
+            }
+            if (highScores.get(i) < least) {
+                least = highScores.get(i);
+            }
+        }
+        for (int i = 0; i < highScores.size(); i++) {
+            if (highScores.get(i) != greatest && highScores.get(i) != least) {
+                middle = highScores.get(i);
+            }
+        }
+        for (int i = 0; i < highScores.size(); i++) {
+            if (highScores.get(i) == playerScore) {
+                idxPS = i;
+            }
+        }
+        str += "High Scores:\n";
+        str += "1. " + greatest + " pellets\n";
+        str += "2. " + middle + " pellets\n";
+        str += "3. " + least + " pellets\n";
+        System.out.println("You placed #" + (idxPS + 1) + "!");
+        return str;
     }
 
 }

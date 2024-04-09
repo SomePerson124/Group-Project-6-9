@@ -26,4 +26,19 @@ public class Character extends Spaces {
         direction = newDirection;
     }
 
+    public void setSymbol() {
+        if (getDirection().equals("north")) {
+            setSymbol("up");
+        }
+        if (getDirection().equals("south")) {
+            setSymbol("down");
+        }
+        if (getDirection().equals("west")) {
+            setSymbol("left");
+        }
+        if (getDirection().equals("east")) {
+            setSymbol("right");
+        }
+    }
+
 }

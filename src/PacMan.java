@@ -10,6 +10,7 @@ public class PacMan extends Character {
         return pelletsCollected;
     }
 
+    @Override
     public void setSymbol() {
         if (getDirection().equals("north")) {
             setSymbol("V");
