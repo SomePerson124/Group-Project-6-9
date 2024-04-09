@@ -1,21 +1,22 @@
 import java.util.Scanner;
 public class PacManLogic {
     private Scanner scan = new Scanner(System.in);
+    private int rows;
+    private int columns;
     private int pacManRow;
     private int pacManCol;
     private PacMan pacMan;
-    private Ghost ghostR;
+    private Ghost ghost1;
     Spaces[][] maze;
 
-
-
-
     public PacManLogic() {
-        maze = new Spaces[20][101];
+        rows = 10;
+        columns = 26;
         pacManCol = 1;
         pacManRow = 1;
+        maze = new Spaces[rows][columns];
         pacMan = new PacMan("<", true, "east");
-        ghostR = new Ghost("G", true, "east", "red", true);
+        ghost1 = new Ghost("👻", true, "east");
         start();
     }
 
@@ -27,20 +28,16 @@ public class PacManLogic {
     private void setUpMaze() {
         for (int r = 0; r < maze.length; r++) {
             for (int c = 0; c < maze[r].length; c++) {
-                maze[r][c] = new Spaces("_");
+                maze[r][c] = new Pellet(".");
+                if (r == 0 || r == maze.length - 1) {
+                    maze[r][c] = new Wall("_");
+                } else if (c == 0 || c == maze[r].length - 1) {
+                    maze[r][c] = new Wall("|");
+                }
             }
         }
         maze[pacManRow][pacManCol] = pacMan;
-        maze[5][10] = ghostR;
-        for (int i = 0; i < 100; i++) {
-            maze[0][i] = new Wall("\uD82F\uDCA1");
-            maze[maze.length - 1][i] = new Wall("\uD82F\uDCA1");
-        }
-        for (int i = 0; i < maze.length; i++) {
-            maze[i][0] = new Wall("\uD82F\uDCA1");
-            maze[i][maze[0].length - 1] = new Wall("\uD82F\uDCA1");
-        }
-
+        maze[5][10] = ghost1;
     }
 
     private void printMaze() {
@@ -53,11 +50,14 @@ public class PacManLogic {
     }
 
     public void game() {
-        while (!(maze[0][100] instanceof PacMan)) {
+        while (arePelletsLeft()) {
             System.out.print("Enter W, A, S, D: ");
             String moveKey = scan.nextLine().toUpperCase();
             if (moveKey.equals("W")) {
                 if (validMove(pacManRow - 1, pacManCol)) {
+                    if (isPellet(pacManRow - 1, pacManCol)) {
+                        pacMan.collectPellet();
+                    }
                     maze[pacManRow - 1][pacManCol] = pacMan;
                     maze[pacManRow][pacManCol] = new Spaces("_");
                     pacManRow = pacManRow - 1;
@@ -65,6 +65,9 @@ public class PacManLogic {
                 pacMan.setDirection("north");
             } else if (moveKey.equals("A")) {
                 if (validMove(pacManRow, pacManCol - 1)) {
+                    if (isPellet(pacManRow, pacManCol - 1)) {
+                        pacMan.collectPellet();
+                    }
                     maze[pacManRow][pacManCol - 1] = pacMan;
                     maze[pacManRow][pacManCol] = new Spaces("_");
                     pacManCol = pacManCol - 1;
@@ -72,6 +75,9 @@ public class PacManLogic {
                 pacMan.setDirection("west");
             } else if (moveKey.equals("S")) {
                 if (validMove(pacManRow + 1, pacManCol)) {
+                    if (isPellet(pacManRow + 1, pacManCol)) {
+                        pacMan.collectPellet();
+                    }
                     maze[pacManRow + 1][pacManCol] = pacMan;
                     maze[pacManRow][pacManCol] = new Spaces("_");
                     pacManRow = pacManRow + 1;
@@ -79,6 +85,9 @@ public class PacManLogic {
                 pacMan.setDirection("south");
             } else if (moveKey.equals("D")) {
                 if (validMove(pacManRow, pacManCol + 1)) {
+                    if (isPellet(pacManRow, pacManCol + 1)) {
+                        pacMan.collectPellet();
+                    }
                     maze[pacManRow][pacManCol + 1] = pacMan;
                     maze[pacManRow][pacManCol] = new Spaces("_");
                     pacManCol = pacManCol + 1;
@@ -91,6 +100,7 @@ public class PacManLogic {
             printMaze();
         }
         System.out.println("You win!");
+        System.out.println(pacMan.getPelletsCollected());
     }
 
     private boolean validMove(int row, int col) {
@@ -100,6 +110,24 @@ public class PacManLogic {
             System.out.println("Cannot move there!");
             return false;
         }
+    }
+
+    private boolean isPellet(int row, int col) {
+        if (maze[row][col] instanceof Pellet) {
+            return true;
+        }
+        return false;
+    }
+
+    private boolean arePelletsLeft() {
+        for (int r = 0; r < maze.length; r++) {
+            for (int c = 0; c < maze[r].length; c++) {
+                if (maze[r][c] instanceof Pellet) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
 }
