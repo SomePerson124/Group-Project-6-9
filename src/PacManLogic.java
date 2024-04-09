@@ -38,6 +38,8 @@ public class PacManLogic {
         }
         maze[pacManRow][pacManCol] = pacMan;
         maze[5][10] = ghost1;
+        maze[5][0] = new Warp("[");
+        maze[5][columns - 1] = new Warp("]");
     }
 
     private void printMaze() {
@@ -59,18 +61,28 @@ public class PacManLogic {
                         pacMan.collectPellet();
                     }
                     maze[pacManRow - 1][pacManCol] = pacMan;
-                    maze[pacManRow][pacManCol] = new Spaces("_");
+                    maze[pacManRow][pacManCol] = new Spaces(" ");
                     pacManRow = pacManRow - 1;
                 }
                 pacMan.setDirection("north");
             } else if (moveKey.equals("A")) {
                 if (validMove(pacManRow, pacManCol - 1)) {
-                    if (isPellet(pacManRow, pacManCol - 1)) {
-                        pacMan.collectPellet();
+                    if (isWarp(pacManRow, pacManCol - 1)) {
+                        maze[pacManRow][pacManCol] = new Spaces(" ");
+                        pacManCol = maze[0].length - 2;
+                        if (isPellet(pacManRow, pacManCol)) {
+                            pacMan.collectPellet();
+                        }
+                        maze[pacManRow][pacManCol] = pacMan;
+                        maze[5][maze[0].length - 1] = new Warp("]");
+                    } else {
+                        if (isPellet(pacManRow, pacManCol - 1)) {
+                            pacMan.collectPellet();
+                        }
+                        maze[pacManRow][pacManCol - 1] = pacMan;
+                        maze[pacManRow][pacManCol] = new Spaces(" ");
+                        pacManCol = pacManCol - 1;
                     }
-                    maze[pacManRow][pacManCol - 1] = pacMan;
-                    maze[pacManRow][pacManCol] = new Spaces("_");
-                    pacManCol = pacManCol - 1;
                 }
                 pacMan.setDirection("west");
             } else if (moveKey.equals("S")) {
@@ -79,18 +91,28 @@ public class PacManLogic {
                         pacMan.collectPellet();
                     }
                     maze[pacManRow + 1][pacManCol] = pacMan;
-                    maze[pacManRow][pacManCol] = new Spaces("_");
+                    maze[pacManRow][pacManCol] = new Spaces(" ");
                     pacManRow = pacManRow + 1;
                 }
                 pacMan.setDirection("south");
             } else if (moveKey.equals("D")) {
                 if (validMove(pacManRow, pacManCol + 1)) {
-                    if (isPellet(pacManRow, pacManCol + 1)) {
-                        pacMan.collectPellet();
+                    if (isWarp(pacManRow, pacManCol + 1)) {
+                        maze[pacManRow][pacManCol] = new Spaces(" ");
+                        pacManCol = 1;
+                        if (isPellet(pacManRow, pacManCol)) {
+                            pacMan.collectPellet();
+                        }
+                        maze[pacManRow][pacManCol] = pacMan;
+                        maze[5][0] = new Warp("[");
+                    } else {
+                        if (isPellet(pacManRow, pacManCol + 1)) {
+                            pacMan.collectPellet();
+                        }
+                        maze[pacManRow][pacManCol + 1] = pacMan;
+                        maze[pacManRow][pacManCol] = new Spaces(" ");
+                        pacManCol = pacManCol + 1;
                     }
-                    maze[pacManRow][pacManCol + 1] = pacMan;
-                    maze[pacManRow][pacManCol] = new Spaces("_");
-                    pacManCol = pacManCol + 1;
                 }
                 pacMan.setDirection("east");
             } else {
@@ -114,6 +136,13 @@ public class PacManLogic {
 
     private boolean isPellet(int row, int col) {
         if (maze[row][col] instanceof Pellet) {
+            return true;
+        }
+        return false;
+    }
+
+    private boolean isWarp(int row, int col) {
+        if (maze[row][col] instanceof Warp) {
             return true;
         }
         return false;
