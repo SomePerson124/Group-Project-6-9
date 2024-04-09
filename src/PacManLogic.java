@@ -52,66 +52,86 @@ public class PacManLogic {
     }
 
     public void game() {
-        while (arePelletsLeft()) {
+        while (arePelletsLeft() && pacMan.isAlive()) {
             System.out.print("Enter W, A, S, D: ");
             String moveKey = scan.nextLine().toUpperCase();
             if (moveKey.equals("W")) {
                 if (validMove(pacManRow - 1, pacManCol)) {
-                    if (isPellet(pacManRow - 1, pacManCol)) {
-                        pacMan.collectPellet();
+                    if (isGhost(pacManRow - 1, pacManCol)) {
+                        maze[pacManRow][pacManCol] = new Spaces(" ");
+                        pacMan.setAlive(false);
+                    } else {
+                        if (isPellet(pacManRow - 1, pacManCol)) {
+                            pacMan.collectPellet();
+                        }
+                        maze[pacManRow - 1][pacManCol] = pacMan;
+                        maze[pacManRow][pacManCol] = new Spaces(" ");
+                        pacManRow = pacManRow - 1;
                     }
-                    maze[pacManRow - 1][pacManCol] = pacMan;
-                    maze[pacManRow][pacManCol] = new Spaces(" ");
-                    pacManRow = pacManRow - 1;
                 }
                 pacMan.setDirection("north");
             } else if (moveKey.equals("A")) {
                 if (validMove(pacManRow, pacManCol - 1)) {
-                    if (isWarp(pacManRow, pacManCol - 1)) {
+                    if (isGhost(pacManRow, pacManCol - 1)) {
                         maze[pacManRow][pacManCol] = new Spaces(" ");
-                        pacManCol = maze[0].length - 2;
-                        if (isPellet(pacManRow, pacManCol)) {
-                            pacMan.collectPellet();
-                        }
-                        maze[pacManRow][pacManCol] = pacMan;
-                        maze[5][maze[0].length - 1] = new Warp("]");
+                        pacMan.setAlive(false);
                     } else {
-                        if (isPellet(pacManRow, pacManCol - 1)) {
-                            pacMan.collectPellet();
+                        if (isWarp(pacManRow, pacManCol - 1)) {
+                            maze[pacManRow][pacManCol] = new Spaces(" ");
+                            pacManCol = maze[0].length - 2;
+                            if (isPellet(pacManRow, pacManCol)) {
+                                pacMan.collectPellet();
+                            }
+                            maze[pacManRow][pacManCol] = pacMan;
+                            maze[5][maze[0].length - 1] = new Warp("]");
+                        } else {
+                            if (isPellet(pacManRow, pacManCol - 1)) {
+                                pacMan.collectPellet();
+                            }
+                            maze[pacManRow][pacManCol - 1] = pacMan;
+                            maze[pacManRow][pacManCol] = new Spaces(" ");
+                            pacManCol = pacManCol - 1;
                         }
-                        maze[pacManRow][pacManCol - 1] = pacMan;
-                        maze[pacManRow][pacManCol] = new Spaces(" ");
-                        pacManCol = pacManCol - 1;
                     }
                 }
                 pacMan.setDirection("west");
             } else if (moveKey.equals("S")) {
                 if (validMove(pacManRow + 1, pacManCol)) {
-                    if (isPellet(pacManRow + 1, pacManCol)) {
-                        pacMan.collectPellet();
+                    if (isGhost(pacManRow + 1, pacManCol)) {
+                        maze[pacManRow][pacManCol] = new Spaces(" ");
+                        pacMan.setAlive(false);
+                    } else {
+                        if (isPellet(pacManRow + 1, pacManCol)) {
+                            pacMan.collectPellet();
+                        }
+                        maze[pacManRow + 1][pacManCol] = pacMan;
+                        maze[pacManRow][pacManCol] = new Spaces(" ");
+                        pacManRow = pacManRow + 1;
                     }
-                    maze[pacManRow + 1][pacManCol] = pacMan;
-                    maze[pacManRow][pacManCol] = new Spaces(" ");
-                    pacManRow = pacManRow + 1;
                 }
                 pacMan.setDirection("south");
             } else if (moveKey.equals("D")) {
                 if (validMove(pacManRow, pacManCol + 1)) {
-                    if (isWarp(pacManRow, pacManCol + 1)) {
+                    if (isGhost(pacManRow, pacManCol + 1)) {
                         maze[pacManRow][pacManCol] = new Spaces(" ");
-                        pacManCol = 1;
-                        if (isPellet(pacManRow, pacManCol)) {
-                            pacMan.collectPellet();
-                        }
-                        maze[pacManRow][pacManCol] = pacMan;
-                        maze[5][0] = new Warp("[");
+                        pacMan.setAlive(false);
                     } else {
-                        if (isPellet(pacManRow, pacManCol + 1)) {
-                            pacMan.collectPellet();
+                        if (isWarp(pacManRow, pacManCol + 1)) {
+                            maze[pacManRow][pacManCol] = new Spaces(" ");
+                            pacManCol = 1;
+                            if (isPellet(pacManRow, pacManCol)) {
+                                pacMan.collectPellet();
+                            }
+                            maze[pacManRow][pacManCol] = pacMan;
+                            maze[5][0] = new Warp("[");
+                        } else {
+                            if (isPellet(pacManRow, pacManCol + 1)) {
+                                pacMan.collectPellet();
+                            }
+                            maze[pacManRow][pacManCol + 1] = pacMan;
+                            maze[pacManRow][pacManCol] = new Spaces(" ");
+                            pacManCol = pacManCol + 1;
                         }
-                        maze[pacManRow][pacManCol + 1] = pacMan;
-                        maze[pacManRow][pacManCol] = new Spaces(" ");
-                        pacManCol = pacManCol + 1;
                     }
                 }
                 pacMan.setDirection("east");
@@ -121,8 +141,6 @@ public class PacManLogic {
             pacMan.setSymbol();
             printMaze();
         }
-        System.out.println("You win!");
-        System.out.println(pacMan.getPelletsCollected());
     }
 
     private boolean validMove(int row, int col) {
@@ -143,6 +161,13 @@ public class PacManLogic {
 
     private boolean isWarp(int row, int col) {
         if (maze[row][col] instanceof Warp) {
+            return true;
+        }
+        return false;
+    }
+
+    private boolean isGhost(int row, int col) {
+        if (maze[row][col] instanceof Ghost) {
             return true;
         }
         return false;
